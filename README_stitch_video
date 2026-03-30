@@ -1,7 +1,5 @@
 Video Stitching with Timestamp Overlay (Python/OpenCV)
 
-This Python script processes folders of timestamped .mp4 videos, converts them to grayscale, overlays vertical timestamps, skips near-black frames, and stitches them into a single output video per folder.
-
 Features
 Reads multiple .mp4 videos from a folder and sorts them by filename-based datetime.
 Converts frames to grayscale.
@@ -16,6 +14,7 @@ OpenCV (cv2)
 pip install opencv-python
 Usage
 Clone or download the script.
+
 Update the settings at the top of the script:
 parent_dir = r"D:\Transferpart2\Fentanyl"  # Root folder containing subfolders of videos
 black_frame_threshold = 10                 # Mean pixel intensity threshold to skip black frames
@@ -25,10 +24,12 @@ thickness = 2                               # Text thickness
 line_height = 20                            # Vertical spacing per character
 x_pos = 10                                  # Horizontal position of timestamp
 bottom_margin = 10                          # Margin from bottom of frame
+
 Run the script:
 python stitch_videos_with_timestamp.py
 Output files will be saved in each corresponding video folder with the naming format:
-<folder_name>_stitched_output_TD.mp4
+<folder_name>_stitched.mp4
+
 Notes
 The script ignores non-directory files in the parent folder.
 Videos are processed in chronological order based on their filename.
@@ -47,5 +48,5 @@ parent_dir/
 
 Each folder will produce:
 
-session1_stitched_output_TD.mp4
-session2_stitched_output_TD.mp4
+session1_stitched.mp4
+session2_stitched.mp4
