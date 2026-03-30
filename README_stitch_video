@@ -1,0 +1,51 @@
+Video Stitching with Timestamp Overlay (Python/OpenCV)
+
+This Python script processes folders of timestamped .mp4 videos, converts them to grayscale, overlays vertical timestamps, skips near-black frames, and stitches them into a single output video per folder.
+
+Features
+Reads multiple .mp4 videos from a folder and sorts them by filename-based datetime.
+Converts frames to grayscale.
+Skips frames below a configurable brightness threshold to remove black frames.
+Overlays the filename as a vertical timestamp on the bottom-left corner of each frame.
+Exports a single stitched video per folder with consistent resolution and FPS.
+
+Requirements
+Python 3.x
+OpenCV (cv2)
+
+pip install opencv-python
+Usage
+Clone or download the script.
+Update the settings at the top of the script:
+parent_dir = r"D:\Transferpart2\Fentanyl"  # Root folder containing subfolders of videos
+black_frame_threshold = 10                 # Mean pixel intensity threshold to skip black frames
+font_scale = 0.8                           # Text size for timestamp
+font_color = 255                            # Text color (0–255 for grayscale)
+thickness = 2                               # Text thickness
+line_height = 20                            # Vertical spacing per character
+x_pos = 10                                  # Horizontal position of timestamp
+bottom_margin = 10                          # Margin from bottom of frame
+Run the script:
+python stitch_videos_with_timestamp.py
+Output files will be saved in each corresponding video folder with the naming format:
+<folder_name>_stitched_output_TD.mp4
+Notes
+The script ignores non-directory files in the parent folder.
+Videos are processed in chronological order based on their filename.
+Only .mp4 files are included; hidden system files (._*) are ignored.
+Timestamps are drawn vertically, one character per line, from bottom to top.
+Example Folder Structure
+parent_dir/
+│
+├── session1/
+│   ├── 2026-01-01 08-00-00.mp4
+│   ├── 2026-01-01 09-00-00.mp4
+│
+├── session2/
+│   ├── 2026-01-02 08-00-00.mp4
+│   └── 2026-01-02 09-00-00.mp4
+
+Each folder will produce:
+
+session1_stitched_output_TD.mp4
+session2_stitched_output_TD.mp4
