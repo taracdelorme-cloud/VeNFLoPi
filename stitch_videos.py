@@ -5,7 +5,7 @@ from datetime import datetime
 
 # UPDATE THESE SETTINGS
 # =================================================
-parent_dir = r"D:\Transferpart2\Fentanyl"
+parent_dir = r"D:\Videos"
 
 black_frame_threshold = 10
 font_scale = 0.8
@@ -37,7 +37,7 @@ for folder_name in os.listdir(parent_dir):
 
     print(f"\n=== Processing folder: {folder_name} ===")
 
-    output_file = f"{folder_name}_stitched_output_TD.mp4"
+    output_file = f"{folder_name}_stitched.mp4"
     out_path = os.path.join(video_folder, output_file)
 
     # Step 1: Collect videos
