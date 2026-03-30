@@ -3,8 +3,7 @@ import cv2
 from datetime import datetime
 
 
-# UPDATE THESE SETTINGS
-# =================================================
+# update these settings
 parent_dir = r"D:\Videos"
 
 black_frame_threshold = 10
@@ -14,8 +13,6 @@ thickness = 2
 line_height = 20
 x_pos = 10
 bottom_margin = 10
-# =================================================
-
 
 def get_datetime_from_filename(filename):
     try:
@@ -23,24 +20,21 @@ def get_datetime_from_filename(filename):
         return datetime.strptime(name, '%Y-%m-%d %H-%M-%S')
     except ValueError:
         return datetime.min
-
-
-# -------------------------------------------------
-# LOOP THROUGH EACH VIDEO FOLDER
-# -------------------------------------------------
+        
+# loop through each video folder
 for folder_name in os.listdir(parent_dir):
 
     video_folder = os.path.join(parent_dir, folder_name)
 
     if not os.path.isdir(video_folder):
-        continue  # skip files
+        continue 
 
     print(f"\n=== Processing folder: {folder_name} ===")
 
     output_file = f"{folder_name}_stitched.mp4"
     out_path = os.path.join(video_folder, output_file)
 
-    # Step 1: Collect videos
+    # step 1: collect videos
     videos = [
         f for f in os.listdir(video_folder)
         if f.endswith(".mp4") and not f.startswith("._")
@@ -52,7 +46,7 @@ for folder_name in os.listdir(parent_dir):
 
     videos.sort(key=get_datetime_from_filename)
 
-    # Step 2: Read first video for metadata
+    # step 2: read first video for metadata
     first_video_path = os.path.join(video_folder, videos[0])
     cap = cv2.VideoCapture(first_video_path)
 
@@ -65,11 +59,11 @@ for folder_name in os.listdir(parent_dir):
         print("  First video unreadable — skipping folder.")
         continue
 
-    # Step 3: VideoWriter
+    # step 3: videoWriter
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = cv2.VideoWriter(out_path, fourcc, fps, (width, height), isColor=False)
 
-    # Step 4: Stitch videos
+    # step 4: stitch videos
     for video in videos:
         video_path = os.path.join(video_folder, video)
         cap = cv2.VideoCapture(video_path)
@@ -88,11 +82,11 @@ for folder_name in os.listdir(parent_dir):
 
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            # Skip black frames
+            # skip black frames
             if gray.mean() < black_frame_threshold:
                 continue
 
-            # Vertical timestamp (bottom-left)
+            # vertical timestamp (bottom-left)
             for i, char in enumerate(timestamp_text):
                 y_pos = height - bottom_margin - i * line_height
                 cv2.putText(
