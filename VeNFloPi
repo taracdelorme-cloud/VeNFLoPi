@@ -1,0 +1,157 @@
+# VeNFLoPi: Raspberry Pi 4B + Arducam OV5647 Setup
+
+# Materials
+- Raspberry Pi 4B  
+- MicroSD card (16 GB)  
+- USB-C power cable  
+- Arducam 5MP OV5647 camera (Pi CSI port; check ribbon orientation)  
+- Micro-HDMI cable to HDMI capture card  
+- HDMI capture card to desktop PC  
+- Desktop PC with OBS installed  
+- Ethernet cable  
+- Keyboard, Mouse, Monitor  
+
+---
+
+# 1) Flash OS on microSD card
+Download [Raspberry Pi Imager](https://www.raspberrypi.com/software/).  
+Insert microSD, select OS → Raspberry Pi OS (Legacy, 32-bit, Bookworm) → Flash.  
+
+---
+
+# 2) Configure Raspberry Pi
+Connect to WiFi
+
+# 3) Configure Arducam in Boot Firmware
+sudo nano /boot/firmware/config.txt
+
+Paste:
+
+dtparam=audio=on
+camera_auto_detect=1
+display_auto_detect=1
+auto_initramfs=1
+max_framebuffers=2
+disable_fw_kms_setup=0
+disable_overscan=1
+arm_boost=1
+
+[cm4]
+otg_mode=1
+
+[cm5]
+dtoverlay=dwc2,dr_mode=host
+
+[all]
+dtoverlay=arducam
+dtoverlay=arducam-motor i2c_bus=1,i2c_addr=0x0c
+start_x=1
+gpu_mem=128
+dtoverlay=vc4-fkms-v3d
+hdmi_force_hotplug=1
+hdmi_group=2
+hdmi_mode=85
+hdmi_drive=2
+hdmi_enable_4kp60=0
+disable_overscan=1
+max_framebuffer_width=1280
+max_framebuffer_height=720
+
+Save (Ctrl+O → Enter) and exit (Ctrl+X).
+Reboot: sudo reboot
+Check: fbset -s
+
+# 4) Install and verify camera apps
+sudo apt update
+sudo apt install -y libcamera-apps v4l-utils
+which rpicam-hello
+which rpicam-vid
+rpicam-hello
+rpicam-hello --version
+
+# 5) Create camera preview script
+sudo nano /usr/local/bin/cam_preview.sh
+
+Paste:
+
+#!/usr/bin/env bash
+export DISPLAY=:0
+export XAUTHORITY=/home/loganlab/.Xauthority
+sleep 5
+xset s off
+xset -dpms
+xset s noblank
+WIDTH=1280
+HEIGHT=720
+FPS=60
+/usr/bin/rpicam-vid --width $WIDTH --height $HEIGHT --framerate $FPS --fullscreen -t 0 --codec h264
+
+# Make executable
+sudo chmod +x /usr/local/bin/cam_preview.sh
+sudo -u pi /usr/local/bin/cam_preview.sh
+
+#6) Add Squid button (shutdown)
+sudo nano /home/pi/squid_button.py
+
+Paste:
+
+from button import Button
+import time
+import os
+
+btn = Button(3)  # GPIO3 / Pin 5
+
+while True:
+    if btn.is_pressed():
+        time.sleep(0.2)
+        os.system("sudo shutdown -hP now")
+        break
+    time.sleep(0.1)
+
+# Make executable
+sudo chmod +x /home/pi/squid_button.py
+sudo nano /etc/rc.local
+
+Add before exit 0:
+
+sudo python3 /home/pi/squid_button.py &
+
+# Button wiring:
+# GPIO17 (BCM17, pin 11) → one leg
+# GND (pin 6) → other leg
+# Short press safely shuts down the Pi.
+
+## 7) Create systemd service for camera
+sudo nano /etc/systemd/system/cam_preview.service
+
+Paste:
+
+[Unit]
+Description=Camera HDMI preview for capture
+After=graphical.target network.target
+Wants=graphical.target
+
+[Service]
+Type=simple
+User=pi
+Environment=DISPLAY=:0
+ExecStart=/usr/local/bin/cam_preview.sh
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target
+
+# Enable and start
+sudo systemctl daemon-reload
+sudo systemctl enable cam_preview.service
+sudo systemctl start cam_preview.service
+sudo systemctl status cam_preview.service
+sudo journalctl -u cam_preview.service -f
+
+## 8) Disable screen blanking permanently
+sudo sed -i '$ a @xset s off\n@xset -dpms\n@xset s noblank' /etc/xdg/lxsession/LXDE-pi/autostart
+sudo reboot
+
