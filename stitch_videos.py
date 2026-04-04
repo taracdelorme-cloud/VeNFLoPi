@@ -2,9 +2,8 @@ import os
 import cv2
 from datetime import datetime
 
-
-# update these settings
-parent_dir = r"D:\Videos"
+# USER SETTINGS
+parent_dir = r"F:\24hIVSA_saline_withdrawal_11.2025_TD\24hIVSA_saline_withdrawal_1-6_11.2025_TD"
 
 black_frame_threshold = 10
 font_scale = 0.8
@@ -20,21 +19,21 @@ def get_datetime_from_filename(filename):
         return datetime.strptime(name, '%Y-%m-%d %H-%M-%S')
     except ValueError:
         return datetime.min
-        
-# loop through each video folder
+
+# LOOP THROUGH EACH VIDEO FOLDER
 for folder_name in os.listdir(parent_dir):
 
     video_folder = os.path.join(parent_dir, folder_name)
 
     if not os.path.isdir(video_folder):
-        continue 
+        continue  # skip files
 
     print(f"\n=== Processing folder: {folder_name} ===")
 
-    output_file = f"{folder_name}_stitched.mp4"
+    output_file = f"{folder_name}_stitched_output_TD.mp4"
     out_path = os.path.join(video_folder, output_file)
 
-    # step 1: collect videos
+    # Step 1: Collect videos
     videos = [
         f for f in os.listdir(video_folder)
         if f.endswith(".mp4") and not f.startswith("._")
@@ -46,7 +45,7 @@ for folder_name in os.listdir(parent_dir):
 
     videos.sort(key=get_datetime_from_filename)
 
-    # step 2: read first video for metadata
+    # Step 2: Read first video for metadata
     first_video_path = os.path.join(video_folder, videos[0])
     cap = cv2.VideoCapture(first_video_path)
 
@@ -59,11 +58,11 @@ for folder_name in os.listdir(parent_dir):
         print("  First video unreadable — skipping folder.")
         continue
 
-    # step 3: videoWriter
+    # Step 3: VideoWriter
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = cv2.VideoWriter(out_path, fourcc, fps, (width, height), isColor=False)
 
-    # step 4: stitch videos
+    # Step 4: Stitch videos
     for video in videos:
         video_path = os.path.join(video_folder, video)
         cap = cv2.VideoCapture(video_path)
@@ -82,11 +81,11 @@ for folder_name in os.listdir(parent_dir):
 
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            # skip black frames
+            # Skip black frames
             if gray.mean() < black_frame_threshold:
                 continue
 
-            # vertical timestamp (bottom-left)
+            # Vertical timestamp (bottom-left)
             for i, char in enumerate(timestamp_text):
                 y_pos = height - bottom_margin - i * line_height
                 cv2.putText(
