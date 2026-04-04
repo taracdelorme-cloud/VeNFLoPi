@@ -1,5 +1,7 @@
 Video Stitching with Timestamp Overlay (Python/OpenCV)
 
+This repository provides a Python script to stitch multiple .mp4 videos from a folder into a single video per folder, overlaying vertical timestamps based on the filenames. The workflow removes black frames and preserves consistent resolution and FPS.
+
 Features
 Reads multiple .mp4 videos from a folder and sorts them by filename-based datetime.
 Converts frames to grayscale.
@@ -8,15 +10,21 @@ Overlays the filename as a vertical timestamp on the bottom-left corner of each 
 Exports a single stitched video per folder with consistent resolution and FPS.
 
 Requirements
-Python 3.x
-OpenCV (cv2)
+Python: 3.12 (Anaconda/Miniconda recommended)
+OpenCV: 4.8.x (tested: 4.8.1)
 
-pip install opencv-python
+Install OpenCV via conda:
+
+conda install -c conda-forge opencv=4.8
+
+⚠ Note: Python ≥3.13 with OpenCV <4.12 cannot reliably write single-channel MP4. Use Python 3.12 + OpenCV 4.8.x for full compatibility.
+
+FFmpeg is included with the conda OpenCV package; no separate install is required.
+
 Usage
 Clone or download the script.
-
 Update the settings at the top of the script:
-parent_dir = r"D:\Transferpart2\Fentanyl"  # Root folder containing subfolders of videos
+parent_dir = r"D:\Transfervideos\mouse1"  # Root folder containing subfolders of videos
 black_frame_threshold = 10                 # Mean pixel intensity threshold to skip black frames
 font_scale = 0.8                           # Text size for timestamp
 font_color = 255                            # Text color (0–255 for grayscale)
@@ -27,7 +35,8 @@ bottom_margin = 10                          # Margin from bottom of frame
 
 Run the script:
 python stitch_videos_with_timestamp.py
-Output files will be saved in each corresponding video folder with the naming format:
+
+Output files will be saved in each corresponding video folder with the format:
 <folder_name>_stitched.mp4
 
 Notes
@@ -35,6 +44,8 @@ The script ignores non-directory files in the parent folder.
 Videos are processed in chronological order based on their filename.
 Only .mp4 files are included; hidden system files (._*) are ignored.
 Timestamps are drawn vertically, one character per line, from bottom to top.
+Frame dimensions should be integers divisible by 2 to avoid encoding errors.
+
 Example Folder Structure
 parent_dir/
 │
@@ -46,7 +57,7 @@ parent_dir/
 │   ├── 2026-01-02 08-00-00.mp4
 │   └── 2026-01-02 09-00-00.mp4
 
-Each folder will produce:
+Output files:
 
 session1_stitched.mp4
 session2_stitched.mp4
