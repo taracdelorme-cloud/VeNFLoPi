@@ -1,17 +1,28 @@
+# -------------------------------------------------
+# IMPORTANT: Check Python and OpenCV versions
+# This script requires:
+#   Python 3.12
+#   OpenCV 4.8.x
+# To check versions in terminal:
+#   python --version
+#   python -c "import cv2; print(cv2.__version__)"
+# -------------------------------------------------
+
 import os
 import cv2
 from datetime import datetime
 
-# USER SETTINGS
-parent_dir = r"F:\24hIVSA_saline_withdrawal_11.2025_TD\24hIVSA_saline_withdrawal_1-6_11.2025_TD"
+## EDIT: Path to the parent directory that contains all subfolders with .mp4 videos to be stitched
+parent_dir = r"F:\Videos\Experiment1"
 
-black_frame_threshold = 10
-font_scale = 0.8
-font_color = 255
-thickness = 2
-line_height = 20
-x_pos = 10
-bottom_margin = 10
+# Edit following parameters as needed
+black_frame_threshold = 10 # Threshold for skipping black frames.
+font_scale = 0.8 # Font scale for the timestamp text (larger number = larger text)
+font_color = 255 # Text color for the timestamp (0–255 for grayscale; 255 = white)
+thickness = 2 # Thickness of the timestamp text lines
+line_height = 20 # Vertical spacing (in pixels) between each character when drawing the timestamp vertically
+x_pos = 10 # Horizontal position (in pixels) of the timestamp from the left edge of the frame
+bottom_margin = 10 # Margin (in pixels) from the bottom of the frame where the timestamp begins
 
 def get_datetime_from_filename(filename):
     try:
@@ -20,20 +31,20 @@ def get_datetime_from_filename(filename):
     except ValueError:
         return datetime.min
 
-# LOOP THROUGH EACH VIDEO FOLDER
+# loop through each subfolder
 for folder_name in os.listdir(parent_dir):
 
     video_folder = os.path.join(parent_dir, folder_name)
 
     if not os.path.isdir(video_folder):
-        continue  # skip files
+        continue  
 
     print(f"\n=== Processing folder: {folder_name} ===")
 
     output_file = f"{folder_name}_stitched_output_TD.mp4"
     out_path = os.path.join(video_folder, output_file)
 
-    # Step 1: Collect videos
+    # collect videos
     videos = [
         f for f in os.listdir(video_folder)
         if f.endswith(".mp4") and not f.startswith("._")
@@ -45,7 +56,7 @@ for folder_name in os.listdir(parent_dir):
 
     videos.sort(key=get_datetime_from_filename)
 
-    # Step 2: Read first video for metadata
+    # read first video for metadata
     first_video_path = os.path.join(video_folder, videos[0])
     cap = cv2.VideoCapture(first_video_path)
 
@@ -58,11 +69,11 @@ for folder_name in os.listdir(parent_dir):
         print("  First video unreadable — skipping folder.")
         continue
 
-    # Step 3: VideoWriter
+    # videoWriter
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = cv2.VideoWriter(out_path, fourcc, fps, (width, height), isColor=False)
 
-    # Step 4: Stitch videos
+    # stitch videos
     for video in videos:
         video_path = os.path.join(video_folder, video)
         cap = cv2.VideoCapture(video_path)
@@ -81,11 +92,11 @@ for folder_name in os.listdir(parent_dir):
 
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            # Skip black frames
+            # skip black frames
             if gray.mean() < black_frame_threshold:
                 continue
 
-            # Vertical timestamp (bottom-left)
+            # vertical timestamp (bottom-left)
             for i, char in enumerate(timestamp_text):
                 y_pos = height - bottom_margin - i * line_height
                 cv2.putText(
