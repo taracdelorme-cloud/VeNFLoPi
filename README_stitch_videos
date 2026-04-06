@@ -44,7 +44,7 @@ Usage
 parent_dir = r"D:\Transfervideos\mouse1"   # Root folder containing ALL subfolders of videos
 
 3. Run the script
-python stitch_video.py
+python stitch_videos.py
 
 Output files will be saved in each video folder with the naming format:
 
