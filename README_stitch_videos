@@ -1,31 +1,19 @@
 Video Stitching with Timestamp Overlay (Python/OpenCV)
-
 This repository provides a Python script to stitch multiple .mp4 videos from a folder into a single video per folder, overlaying vertical timestamps based on the filenames.
 
 !!Important Compatibility Note!!
-
 This script relies on OpenCV's ability to write single-channel grayscale .mp4 videos. Newer versions of OpenCV (≥4.12) used with Python 3.13 can fail with the error: FFmpeg: Failed to write frame
 
 To ensure compatibility, use the following versions:
+-Software	Version
+-Python	3.12.x
+-OpenCV	4.8.x (tested: 4.8.1)
 
-Software	Version
-Python	3.12.x
-OpenCV	4.8.x (tested: 4.8.1)
+We recommend you check Your Installed Versions:
+-Check your OpenCV version: python -c "import cv2; print(cv2.__version__)"
+-Check your Python version: python --version
 
-We recommend you check Your Installed Versions
-
-Check your OpenCV version:
-python -c "import cv2; print(cv2.__version__)"
-
-Check your Python version:
-python --version
-
-Example expected output:
-Python 3.12.x
-4.8.1
-Recommended Environment Setup
-
-Using Conda (Anaconda or Miniconda):
+Recommended Environment Setup using Conda:
 conda create -n opencv48 python=3.12
 conda activate opencv48
 conda install -c conda-forge opencv=4.8
@@ -37,14 +25,16 @@ Features
 -Overlays the filename as a vertical timestamp on the bottom-left corner of each frame
 -Exports a single stitched video per folder with consistent resolution and FPS
 
-Usage
-1. Download the .py script
-2. Update the settings at the top of the script
+Steps:
+1. Download most recent .py script
 
+2. Update settings at the top of the script:
 parent_dir = r"D:\Transfervideos\mouse1"   # Root folder containing ALL subfolders of videos
 
-3. Run the script
-python stitch_videos.py
+3. Run the script:
+-Navigate to the folder containing the script: cd path\to\script
+(Example: cd C:\Users\LoganLab\Desktop)
+-Then run: python stitch_videos.py
 
 Output files will be saved in each video folder with the naming format:
 
@@ -60,3 +50,4 @@ parent_dir/
 ├── session2/
 │   ├── 2026-01-02 08-00-00.mp4
 │   └── 2026-01-02 09-00-00.mp4
+
