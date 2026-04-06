@@ -29,7 +29,7 @@ Steps:
 1. Download most recent .py script
 
 2. Update settings at the top of the script:
-parent_dir = r"D:\Transfervideos\mouse1"   # Root folder containing ALL subfolders of videos
+parent_dir = r"F:\Videos\Experiment1"   # Root folder containing ALL subfolders of videos
 
 3. Run the script:
 -Navigate to the folder containing the script: cd path\to\script
