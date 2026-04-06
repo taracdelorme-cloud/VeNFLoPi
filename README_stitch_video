@@ -1,50 +1,54 @@
 Video Stitching with Timestamp Overlay (Python/OpenCV)
 
-This repository provides a Python script to stitch multiple .mp4 videos from a folder into a single video per folder, overlaying vertical timestamps based on the filenames. The workflow removes black frames and preserves consistent resolution and FPS.
+This repository provides a Python script to stitch multiple .mp4 videos from a folder into a single video per folder, overlaying vertical timestamps based on the filenames.
 
-Features
-Reads multiple .mp4 videos from a folder and sorts them by filename-based datetime.
-Converts frames to grayscale.
-Skips frames below a configurable brightness threshold to remove black frames.
-Overlays the filename as a vertical timestamp on the bottom-left corner of each frame.
-Exports a single stitched video per folder with consistent resolution and FPS.
+!!Important Compatibility Note!!
 
-Requirements
-Python: 3.12 (Anaconda/Miniconda recommended)
-OpenCV: 4.8.x (tested: 4.8.1)
+This script relies on OpenCV's ability to write single-channel grayscale .mp4 videos. Newer versions of OpenCV (≥4.12) used with Python 3.13 can fail with the error: FFmpeg: Failed to write frame
 
-Install OpenCV via conda:
+To ensure compatibility, use the following versions:
 
+Software	Version
+Python	3.12.x
+OpenCV	4.8.x (tested: 4.8.1)
+
+We recommend you check Your Installed Versions
+
+Check your OpenCV version:
+python -c "import cv2; print(cv2.__version__)"
+
+Check your Python version:
+python --version
+
+Example expected output:
+Python 3.12.x
+4.8.1
+Recommended Environment Setup
+
+Using Conda (Anaconda or Miniconda):
+conda create -n opencv48 python=3.12
+conda activate opencv48
 conda install -c conda-forge opencv=4.8
 
-⚠ Note: Python ≥3.13 with OpenCV <4.12 cannot reliably write single-channel MP4. Use Python 3.12 + OpenCV 4.8.x for full compatibility.
-
-FFmpeg is included with the conda OpenCV package; no separate install is required.
+Features
+-Reads multiple .mp4 videos from a folder and sorts them by filename-based datetime
+-Converts frames to grayscale
+-Skips frames below a configurable brightness threshold to remove black frames
+-Overlays the filename as a vertical timestamp on the bottom-left corner of each frame
+-Exports a single stitched video per folder with consistent resolution and FPS
 
 Usage
-Clone or download the script.
-Update the settings at the top of the script:
-parent_dir = r"D:\Transfervideos\mouse1"  # Root folder containing subfolders of videos
-black_frame_threshold = 10                 # Mean pixel intensity threshold to skip black frames
-font_scale = 0.8                           # Text size for timestamp
-font_color = 255                            # Text color (0–255 for grayscale)
-thickness = 2                               # Text thickness
-line_height = 20                            # Vertical spacing per character
-x_pos = 10                                  # Horizontal position of timestamp
-bottom_margin = 10                          # Margin from bottom of frame
+1. Download the .py script
+2. Update the settings at the top of the script
 
-Run the script:
-python stitch_videos_with_timestamp.py
+parent_dir = r"D:\Transfervideos\mouse1"   # Root folder containing ALL subfolders of videos
 
-Output files will be saved in each corresponding video folder with the format:
+3. Run the script
+python stitch_video.py
+
+Output files will be saved in each video folder with the naming format:
+
 <folder_name>_stitched.mp4
-
-Notes
-The script ignores non-directory files in the parent folder.
-Videos are processed in chronological order based on their filename.
-Only .mp4 files are included; hidden system files (._*) are ignored.
-Timestamps are drawn vertically, one character per line, from bottom to top.
-Frame dimensions should be integers divisible by 2 to avoid encoding errors.
 
 Example Folder Structure
 parent_dir/
@@ -56,8 +60,3 @@ parent_dir/
 ├── session2/
 │   ├── 2026-01-02 08-00-00.mp4
 │   └── 2026-01-02 09-00-00.mp4
-
-Output files:
-
-session1_stitched.mp4
-session2_stitched.mp4
