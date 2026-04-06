@@ -12,7 +12,7 @@ import os
 import cv2
 from datetime import datetime
 
-## EDIT: Path to the parent directory that contains all subfolders with .mp4 videos to be stitched
+## USER MUST EDIT Path to the parent directory that contains all subfolders with .mp4 videos to be stitched
 parent_dir = r"F:\Videos\Experiment1"
 
 # Edit following parameters as needed
