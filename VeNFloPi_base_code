@@ -54,12 +54,12 @@ gpu_mem=128
 dtoverlay=vc4-fkms-v3d
 hdmi_force_hotplug=1
 hdmi_group=2
-hdmi_mode=85
+hdmi_mode=82
 hdmi_drive=2
 hdmi_enable_4kp60=0
 disable_overscan=1
-max_framebuffer_width=1280
-max_framebuffer_height=720
+max_framebuffer_width=1920
+max_framebuffer_height=1080
 
 Save (Ctrl+O → Enter) and exit (Ctrl+X).
 Reboot: sudo reboot
@@ -85,9 +85,9 @@ sleep 5
 xset s off
 xset -dpms
 xset s noblank
-WIDTH=1280
-HEIGHT=720
-FPS=60
+WIDTH=1920
+HEIGHT=1080
+FPS=30
 /usr/bin/rpicam-vid --width $WIDTH --height $HEIGHT --framerate $FPS --fullscreen -t 0 --codec h264
 
 # Make executable
