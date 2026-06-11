@@ -100,7 +100,7 @@ https://obsproject.com/
 Recommended recording settings:
 
 Resolution: 1920 x 1080
-Frame rate: 60 FPS
+Frame rate: 30 FPS
 Format: MKV
 Auto-remux to MP4
 
