@@ -79,8 +79,6 @@ sudo nano /usr/local/bin/cam_preview.sh
 Paste:
 
 #!/usr/bin/env bash
-export DISPLAY=:0
-export XAUTHORITY=/home/loganlab/.Xauthority
 sleep 5
 xset s off
 xset -dpms
