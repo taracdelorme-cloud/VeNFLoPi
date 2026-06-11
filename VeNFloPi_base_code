@@ -88,7 +88,7 @@ xset s noblank
 WIDTH=1920
 HEIGHT=1080
 FPS=30
-/usr/bin/rpicam-vid --width $WIDTH --height $HEIGHT --framerate $FPS --fullscreen -t 0 --codec h264
+/usr/bin/rpicam-vid --width $WIDTH --height $HEIGHT --framerate $FPS --bitrate 10000000 --fullscreen -t 0 --codec h264
 
 # Make executable
 sudo chmod +x /usr/local/bin/cam_preview.sh
