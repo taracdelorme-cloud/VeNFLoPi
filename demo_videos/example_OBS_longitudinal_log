@@ -204,7 +204,7 @@
 08:39:22.930: 	video path: \\?\pci#ven_8888&dev_8504&subsys_00078888&rev_00#4&2a49f8e6&0&00e0#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\hdvideo1
 08:39:22.930: 	resolution: 1920x1080
 08:39:22.930: 	flip: 0
-08:39:22.930: 	fps: 60.00 (interval: 166666)
+08:39:22.930: 	fps: 30.00 (interval: 333333)
 08:39:22.930: 	format: YUY2
 08:39:22.930: 	buffering: disabled
 08:39:22.930: 	hardware decode: disabled
