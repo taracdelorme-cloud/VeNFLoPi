@@ -1,0 +1,21 @@
+Thermal Stability 
+============================================================
+
+ To assess thermal stability during extended
+multi-camera recording, host CPU/GPU temperatures were logged
+throughout a 24-hour session.
+
+Columns: Date, Time, Core Temperatures (avg) [C], GPU Temperature [C]
+Source: HWiNFO log, filtered to the Box19 recording window
+
+Session details:
+  Window: 2026-07-03 08:39:55 to 2026-07-04 08:39:55 (24 hours)
+  Samples: 42,943 (~2 sec intervals)
+  Host CPU: Intel Core Ultra 7 265F
+  Host GPU: NVIDIA GeForce RTX 5060
+
+Summary:
+  CPU core temp (C): mean 50.5, min 42.0, max 63.0
+  GPU temp (C): mean 36.4, min 34.7, max 38.4
+
+No thermal throttling or shutdown events were observed.
