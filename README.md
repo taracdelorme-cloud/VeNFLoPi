@@ -1,10 +1,9 @@
 # VeNFLoPi
 
-(unpublished)
-Versatile Night/Day Framework for Longitudinal Pi-based Imaging
-Open-source Raspberry Pi camera platform for behavioral neuroscience experiments.
+Versatile night/day framework for longitudinal Pi-based Imaging (VeNFLoPi) is an open-source camera setup for behavioral assays
 
 Tara C. Delorme, Mackenzie C. Gamble, Ryan W. Logan
+Sci Rep (2026). https://doi.org/10.1038/s41598-026-67334-y
 
 Overview
 
